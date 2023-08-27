@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <environment include="Development,production">
+		<link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+		<script src="~/lib/ajax/dist/jquery.unobtrusive-ajax.js"></script>
+		<link href="~/lib/font-awesome/css/fontawesome.css" rel="stylesheet" />
+        <script src="~/lib/jquery/jquery.js"></script>
+
+    </environment>
+    <script>
+        function LoadData(skillId = null) {
+            var SkillContainer = $("#SkillContainer")
+            $.ajax({
+                url: "/Candidates/AddNewSkills/" + skillId ?? "",
+                type: "GET",
+                success:function(data){
+                    SkillContainer.append(data);
+                }
+            })
+        }
+        $(document).on("click", "#btnPlus", function (e) {
+            e.preventDefault();
+            LoadData();
+        });
+        $(document).on("click", "#DeleteSkill", function (e) {
+            e.preventDefault();
+            $(this).parent().parent().remove();
+        })
+    </script>
+    @*@RenderSection("styles",required:false)*@
+    <style>
+        body{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">IsDB-BISEW</div>
+    <div class="container my-3">
+        <nav class="nav navbar-expand-lg bg-dark">
+            <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link active" asp-controller="Skills" asp-action="Index">Skill</a>
+            <a class="nav-link active" asp-controller="Candidates" asp-action="Index">Candidate</a>
+        </nav>
+    </div>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer class="container">
+        <p class="text-center">&copy; @DateTime.Now.Year - www.isdb-bisew</p>
+    </footer>
+    <environment include="Development,Production">
+		<script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
+		<script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    </environment>
+    @await RenderSectionAsync("scripts",required:false)
+</body>
+</html>
